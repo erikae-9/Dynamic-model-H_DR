@@ -7,7 +7,9 @@ About the Direct reduction model
 	model, see the thesis report.
 
 	The folder contains a number of MATLAB scripts and Simulink files that can be used to find steady state, generate datasets, simulate the dynamic behavior
-	or regulate the model. All different files will be described below:
+	or regulate the model. Some Steady-state solutions are within the files, called start.mat an start49.mat, and are solutions based on reactor data from the Siderca Plant 
+	in Argentina.
+	All different files will be described below (created with the MATLAB and SImulink release R2023b):
 
 	MATLAB Script: calc_lambda_cp_my.m
 	
@@ -45,16 +47,38 @@ About the Direct reduction model
 
 	MATLAB Script: SS_solve.m
 
-		ss
+		SS_solve implements the "lsqnonlin" function to find the zero solution to the derivative functions (in other words, the steady state solution). The script uses the Const.mlx
+		script to initialize all constants, and the lsqnonlin tries to minimize the derivativecalcc script. The solver is initialized by setting the minimum and maximum values for all 
+		states as the inlet and oputlet temperatures of the materials. 
+		There also exists options to change the wanted tolerance, maximum function evaluantions and the maximum number of iterations. When the zero solution is found, the 
+		script prints a table showing the outlet condidtions as well as giving the option for the user to print figures for temperature, concentration and metallization profiles by 
+		choosing a number between 0 and 3.
 
 	MATLAB Script: Initialization.mlx
 
-		ss
+		The Initialization script is very similar to the Const.mlx script. This script is linked to the Model.slx file and differs from the Const.mlx by clearing the workspace before 
+		running and also loading initial values of all states - which is used in the Simulink simulation. By choosing between 49 and 100 inner points, the script loads the MAT-files
+		start49.mat or start.mat respectively - which is the steady-state solutions to the Siderca-plant specifications found by running the SS_solve script.
 
 	Simulink file: Model.slx
 
-		ss
+		This Simulink file is the main implementation of the dynamic model. The model is implemented in implicit form, where the block "Temperature- and concentrations
+		dependent coefficients" calculates all neccessary coefficients in the model by implementing the same code as in  the coeff.m script in a "MATLAB-function" block. 
+		he block "ODE time derivatives" caluclates the derivatives for all node-states in a "MATLAB-function block", which is the same code as in the derivativecalcc.m script 
+		derivativecalcc.m.  After the "ODE time derivatives" -block, the states are integrated and fed to the blocks again - completing the implicit loop. Also, scopes for 
+		temperatures, concentration and Metallization is present.
+
+		The function blocks are having multiple inputs defined as "Parameter data" - meaning that the values are taken from the MATLAB workspace.
+	
+		By clicking the button "Initialize", the script Initialization.mlx is run. Making all material parameters, constants and the initial state available in the workspace.
 
 	Simulink file: Model_regulator.slx
 
-		asd
+		A modification of the Model.slx file where two types of regulators is implemented to control the metallization grade by changing the solid mass flow. One is a continous
+		PI-controller, that can be used to show how the regulation could work. The other is a discrete PI-controller, since metallization can't be measured continously. The 
+		controller is therefore fed a signal with a certain interval (standard is 5 minutes) that mimics the speed of which the measurements are done.
+
+
+
+
+

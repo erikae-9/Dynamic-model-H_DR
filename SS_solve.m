@@ -57,7 +57,7 @@ tab = table(Tg,Ts,x_H2,x_CO,Metallization)
     
 %% Print figures
 
-p = input('Print how many figures? ');
+p = input('Print how many figures (0-3)? ');
 
 if p >= 1
     figure(1)
