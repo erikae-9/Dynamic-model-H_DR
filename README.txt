@@ -1,49 +1,57 @@
 		
 About the Direct reduction model
 		
-	This model is built during the master thesis project "Dynamic modeling and simulation of Direct reduction furnace" in the spring of 2024.
-	The model is centered on the 1D mass- and energy balances inside the furnace and the Unreacted shrinking core model for describing the pellet reduction, 
-	it also contains tables and expressions for how material constants, equation coefficients etc. changes with temperature and concentration. For full details of the
-	model, see the thesis report.
+	This model is built during the master thesis project "Dynamic modeling and simulation of Direct reduction furnace" in 
+	the spring of 2024. The model is centered on the 1D mass- and energy balances inside the furnace and the Unreacted 
+	shrinking core model for describing the pellet reduction, it also contains tables and expressions for how material 
+	constants, equation coefficients etc. changes with temperature and concentration. For full details of the model, see 
+	the thesis report.
 
-	The folder contains several MATLAB scripts and Simulink files that can be used to find steady state, generate datasets, simulate the dynamic behavior
-	, or regulate the model. Some Steady-state solutions are within the files, called start.mat and start49.mat, and are solutions based on reactor data from the Siderca Plant 
-	in Argentina.
+	The folder contains several MATLAB scripts and Simulink files that can be used to find steady state, generate datasets, 
+	simulate the dynamic behavior, or regulate the model. Some Steady-state solutions are within the files, called start.mat 
+	and start49.mat, and are solutions based on reactor data from the Siderca Plant in Argentina.
+
 	All different files will be described below (created with the MATLAB and Simulink release R2023b):
 
 	MATLAB Script: calc_lambda_cp_my.m
 	
-		This script generates datasets and tables that are necessary for the simulation models. The script uses expressions and tabulated values to create datasets 
-		that is stored in structs for each element and then saved in the file lambda_cp_my.mat so that the script doesn't need to be run every time.
+		This script generates datasets and tables that are necessary for the simulation models. The script uses expressions 
+		and tabulated values to create datasets that is stored in structs for each element and then saved in the file 
+		lambda_cp_my.mat so that the script doesn't need to be run every time.
 	
-		Example: All necessary data for hydrogen gas can be found in the struct H2. All properties can be found in the different fields of the struct and are tabulated 
-		against the temperature, which can be found in H2.T.  
+		Example: All necessary data for hydrogen gas can be found in the struct H2. All properties can be found in the 
+		different fields of the struct and are tabulated against the temperature, which can be found in H2.T.  
 
 	MATLAB Script: Const.mlx
 
-		This script is used as an initialization script for the SS_solve script. In the file, there are multiple coefficients, constants and reactor-specific parameters that can be 
-		modified to change the process. All parameters regarding material properties are added to each material struct, while the rest of the constants are added to the 
-		struct named Var. In some cases, there exists an option to choose between two ways of entering the constant (like choosing between the number of pellets or the 
-		the porosity of the reactor)
+		This script is used as an initialization script for the SS_solve script. In the file, there are multiple 
+		coefficients, constants, and reactor-specific parameters that can be modified to change the process. All 
+		parameters regarding material properties are added to each material struct, while the rest of the 
+		constants are added to the struct named Var. In some cases, there exists an option to choose between two ways 
+		of entering the constant (like choosing between the number of pellets or the the porosity of the reactor)
 
-		Example: The iron-ore mass flow is a property that can be changed. By changing the ms value in the script, the new value will be stored in the struct. However, the
-		mass flow is not used directly in the model and therefore the mass flow is calculated into velocity instead. If the velocity is known, then there exists an option to 
+		Example: The iron-ore mass flow is a property that can be changed. By changing the ms value in the script, the 
+		new value will be stored in the struct. However, the emass flow is not used directly in the model, and therefore 
+		the mass flow is calculated into velocity instead. If the velocity is known, then there exists an option to 
 		enter the velocity instead.
 
 	MATLAB Script: coeff.m
 
-		This script calculates the necessary coefficient inside the reactor given values of temperatures and concentrations for the different materials. coeff interpolates
-		material properties from the material structs and uses the expressions to find values of the gas mix conductivity, the reaction rate, metallization grade, etc. 
+		This script calculates the necessary coefficient inside the reactor given values of temperatures and 
+		concentrations for the different materials. coeff interpolates material properties from the material structs and 
+		uses the expressions to find values of the gas mix conductivity, the reaction rate, metallization grade, etc. 
 
 		The script is used together with derivativecalcc in the SS_solve.m script to find the steady-state solutions.
 
 	MATLAB Script: derivativecalcc.m
 
-		derivativecalcc calculates the state time derivatives in the DR model based on the known PDEs and the upwind discretization of the equations using an input vector X
-		containing the temperatures and concentrations in an N-by-5 vector. The full derivation of these matrices can be found in the thesis report. The output gives a value of the 
-		time derivative of each inner point of the reactor, stored in an analogous N-by-5 vector.
+		derivativecalcc calculates the state time derivatives in the DR model based on the known PDEs and the upwind 
+		discretization of the equations using an input vector X containing the temperatures and concentrations in an 
+		N-by-5 vector. The full derivation of these matrices can be found in the thesis report. The output gives a value 
+		of the time derivative of each inner point of the reactor, stored in an analogous N-by-5 vector.
 
-		The script uses coeff.m to calculate all coefficients and is used in the SS_solve.m script to find steady-state solutions
+		The script uses coeff.m to calculate all coefficients and is used in the SS_solve.m script to find steady-state 
+		solutions.
 
 	MATLAB Script: SS_solve.m
 
