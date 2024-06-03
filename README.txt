@@ -68,35 +68,35 @@ About the Direct reduction model
 
 	MATLAB Script: Initialization.mlx
 
-		The Initialization script is very similar to the Const.mlx script. This script is linked to the Model.slx file 
-		and differs from the Const.mlx by clearing the workspace before running and also loading initial values of all 
-		states - which is used in the Simulink simulation. By choosing between 49 and 100 inner points, the script 
-		loads the MAT-files start49.mat or start.mat respectively - which is the steady-state solution to the Siderca-
-		plant specifications found by running the SS_solve script.
+		The Initialization script is very similar to the Const.mlx script. This script is linked to the Model.slx 
+		file and differs from the Const.mlx by clearing the workspace before running and also loading initial 
+		values of all states - which is used in the Simulink simulation. By choosing between 49 and 100 inner 
+		points, the script loads the MAT-files start49.mat or start.mat respectively - which is the steady-state 
+		solution to the Siderca-plant specifications found by running the SS_solve script.
 
 	Simulink file: Model.slx
 
-		This Simulink file is the main implementation of the dynamic model. The model is implemented in implicit form, 
-		where the block "Temperature- and concentrations dependent coefficients" calculate all necessary coefficients 
-		in the model by implementing the same code as in  the coeff.m script in a "MATLAB-function" block. The block 
-		"ODE time derivatives" calculates the derivatives for all node-states in a "MATLAB-function block", which is 
-		the same code as in the derivativecalcc.m script.  After the "ODE time derivatives" -block, the states are 
-		integrated and fed to the blocks again - completing the implicit loop. Also, scopes for temperatures, 
-		concentration, and Metallization are present.
+		This Simulink file is the main implementation of the dynamic model. The model is implemented in implicit 
+		form, where the block "Temperature- and concentrations dependent coefficients" calculate all necessary 
+		coefficients in the model by implementing the same code as in  the coeff.m script in a "MATLAB-function" 
+		block. The block "ODE time derivatives" calculates the derivatives for all node-states in a  
+		"MATLAB-function block", which is the same code as in the derivativecalcc.m script.  After the "ODE time 
+		derivatives" -block, the states are integrated and fed to the blocks again - completing the implicit loop. 
+		Also, scopes for temperatures, concentration, and Metallization are present.
 
-		The function blocks are having multiple inputs defined as "Parameter data" - meaning that the values are taken 
-		from the MATLAB workspace.
+		The function blocks are having multiple inputs defined as "Parameter data" - meaning that the values are  
+		taken from the MATLAB workspace.
 	
 		By clicking the button "Initialize", the script Initialization.mlx is run. Making all material parameters, 
 		constants and the initial state available in the workspace.
 
 	Simulink file: Model_regulator.slx
 
-		A modification of the Model.slx file where two types of regulators is implemented to control the metallization 
-		grade by changing the solid mass flow. One is a continuous PI-controller, that can be used to show how the 
-		regulation could work. The other is a discrete PI-controller since metallization can't be measured continuously. 
-		The controller is therefore fed a signal with a certain interval (standard is 5 minutes) that mimics the speed 
-		at which the measurements are done.
+		A modification of the Model.slx file where two types of regulators is implemented to control the 
+		metallization grade by changing the solid mass flow. One is a continuous PI-controller, that can be used 
+		to show how the regulation could work. The other is a discrete PI-controller since metallization can't be 
+		measured continuously. The controller is therefore fed a signal with a certain interval (standard is 5 
+		minutes) that mimics the speed at which the measurements are done.
 
 
 
