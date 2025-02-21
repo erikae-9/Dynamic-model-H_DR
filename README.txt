@@ -2,7 +2,8 @@
 About the Direct reduction model
 		
 	This model is built during the master thesis project "Dynamic modeling and simulation of Direct reduction furnace" in 
-	the spring of 2024. The model is centered on the 1D mass- and energy balances inside the furnace and the Unreacted 
+	the spring of 2024 (Thesis can be found here: https://urn.kb.se/resolve?urn=urn:nbn:se:ltu:diva-107922). 
+	The model is centered on the 1D mass- and energy balances inside the furnace and the Unreacted 
 	shrinking core model for describing the pellet reduction, it also contains tables and expressions for how material 
 	constants, equation coefficients etc. changes with temperature and concentration. For full details of the model, see 
 	the thesis report.
